@@ -1,4 +1,3 @@
-
 export interface User {
   id: string | null;
   name: string;
@@ -6,20 +5,29 @@ export interface User {
   lastOnlineTime: Date | null;
   totalGames: number;
   wins: number;
+  color: "RED" | "BLACK";
   _links?: Links;
 }
 
+export interface ColorUser {
+  RED: User;
+  BLACK: User;
+}
+
 export interface Game {
+  id: string;
   status: "IN_PROGRESS" | "END";
   totalSteps: number;
-  boards: [{ step: string; board: Board }];
+  boards: [Board];
   _links?: Links;
 }
 
 export interface Board {
   id: string;
   step: number;
-  pieces: [{ index: number; piece: Piece }];
+  pieces: {
+    [index: string]: Piece;
+  };
   _links?: Links;
 }
 
@@ -36,7 +44,7 @@ export interface Piece {
 export interface Links {
   self: Link;
   users?: Link;
-  piece?: Link;
+  pieces?: Link;
   game?: Link;
   boards?: Link;
 }
@@ -56,21 +64,19 @@ export type GameProps = {
 };
 
 export type GameState = {
-    user: User | null;
-    game: Game | null;
-    board: Board | null;
+  user: User | null;
+  game: Game | null;
+  board: Board | null;
 };
 
 export type BoardProps = {
-    user: User | null;
-    board: Board | null;
-}
+  user: User | null;
+  board: Board | null;
+};
 
 export type BoardState = {
-    user: User | null;
-    board: Board | null;
-}
+  user: User | null;
+  board: Board | null;
+};
 
 export const apiUri: string = "localhost:8080";
-
-export default User;

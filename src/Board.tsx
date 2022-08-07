@@ -1,6 +1,5 @@
-import React, { FormEvent } from "react";
-import axios from "axios";
-import User, { BoardProps, BoardState, Game} from "./types";
+import React from "react";
+import { BoardProps, BoardState} from "./types";
 
 
 export default class BoardElement extends React.Component<BoardProps, BoardState> {
