@@ -13,7 +13,6 @@ export default class BoardElement extends React.Component<
     this.handlePiece = this.handlePiece.bind(this);
     this.handleBlank = this.handleBlank.bind(this);
 
-    console.log("boardconstructor" + this.state, );
   }
 
   //shouldComponentUpdate
@@ -51,7 +50,6 @@ export default class BoardElement extends React.Component<
         .catch((error) => {
           console.log("error" + error);
           this.setState({ errInfo: error.message });
-          console.log(error);
         });
     }
   }
@@ -68,8 +66,6 @@ export default class BoardElement extends React.Component<
   }
   render(): React.ReactNode {
     let res: JSX.Element[] = [];
-    //this.setState({board:this.props.board})
-    //console.log(this.state.board);
     if (this.props.board === null) {
       return <div></div>;
     }
@@ -131,7 +127,6 @@ function Row({
   user,
 }: RowProps): JSX.Element {
   let curRow: JSX.Element[] = [];
-  let handleBlock = handleBlank;
 
   const curRound =
     board === null
@@ -142,6 +137,7 @@ function Row({
       : false;
 
   for (let i = 0; i < 9; i++) {
+    let handleBlock = handleBlank;
     let index = (row * 9 + i).toString();
     if (user?.color === "RED") {
       index = ((9 - row) * 9 + (8 - i)).toString();
@@ -151,6 +147,7 @@ function Row({
       ? board?.pieces[index]
       : null;
     if (block !== null && block.color === user?.color) {
+      
       handleBlock = handlePiece;
     }
     curRow.push(
