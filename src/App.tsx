@@ -62,16 +62,16 @@ class App extends React.Component<Object, AppState> {
     console.log(user);
 
     let pieces = (
-      await axios.get(game.boards[0]._links?.pieces?.href as string)
+      await axios.get((game.boards.at(-1) as Board)._links?.pieces?.href as string)
     ).data;
-    game.boards[0].pieces = {};
+    (game.boards.at(-1) as Board).pieces = {};
     Object.keys(pieces).forEach((key) => {
       console.log(key);
       console.log(pieces[key]);
 
-      game.boards[0].pieces[key] = pieces[key];
+      (game.boards.at(-1) as Board).pieces[key] = pieces[key];
     });
-    setEntityId(game.boards[0]);
+    setEntityId(game.boards.at(-1) as Board);
     setEntityId(game);
     console.log(game.boards);
 

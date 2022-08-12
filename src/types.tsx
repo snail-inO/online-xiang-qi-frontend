@@ -1,5 +1,3 @@
-import { MouseEventHandler } from "react";
-import internal from "stream";
 
 export interface User {
   id: string | null;
@@ -21,7 +19,7 @@ export interface Game {
   id: string;
   status: "IN_PROGRESS" | "END";
   totalSteps: number;
-  boards: [Board];
+  boards: Array<Board>;
   _links?: Links;
 }
 
@@ -36,7 +34,7 @@ export interface Board {
 
 export interface Piece {
   id: string;
-  type: "ZU"|"JU"|"MA"|"PAO"|"XIANG"|"SHI"|"SHUAI";
+  type: "JU" | "MA" | "PAO" | "XIANG" | "SHI" | "SHUAI" | "BING";
   color: "RED" | "BLACK";
   row: number;
   col: number;
@@ -70,41 +68,34 @@ export type GameState = {
   user: User | null;
   game: Game | null;
   board: Board | null;
-  selected: boolean;
-  selectedPiece:Piece|null;
+
 };
 
 export type BoardProps = {
   user: User | null;
   board: Board | null;
-  handlePiece: Function;
-  handleBlank: Function;
-  //steps:number;
-
 };
 
 export type BoardState = {
   // user: User | null;
   board: Board | null;
-  
+  selectedPiece: Piece | null;
+  errInfo?: string;
 };
 
 export type BlockProps = {
   //user: User | null;
   block: Piece | null;
   handleBlock: Function | null;
-  col:number;
-  row:number;
-}
+  col: number;
+  row: number;
+};
 
 export type BlockState = {
   //user: User | null;
   block: Piece | null;
-  col:number;
-  row:number;
-  
-}
+  col: number;
+  row: number;
+};
 
-
-
-export const apiUri: string = "www.portfolio-of.me";
+export const apiUri: string = "localhost:8080";
