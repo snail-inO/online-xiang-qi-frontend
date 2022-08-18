@@ -1,6 +1,7 @@
 import React, { MouseEventHandler } from "react";
 import { BlockProps, BlockState } from "./types";
 import BoardElement from "./Board";
+import "./App.css"
 
 export default class BlockElement extends React.Component<
   BlockProps,
@@ -21,12 +22,39 @@ export default class BlockElement extends React.Component<
   };
 
   render(): React.ReactNode {
+    let myBlock = "";
+  if(this.props.block !== null){
+    switch(this.props.block?.type){
+      case "JU": 
+        myBlock = this.props.block.color == "BLACK"?"車":"俥";
+        break;
+      case "MA": 
+        myBlock = this.props.block.color == "BLACK"?"馬":"傌";
+        break;
+      case "PAO": 
+        myBlock = this.props.block.color == "BLACK"?"炮":"炮";
+        break;
+      case "SHI": 
+        myBlock = this.props.block.color == "BLACK"?"士":"仕";
+        break;
+      case "XIANG": 
+        myBlock = this.props.block.color == "BLACK"?"象":"相";
+        break;
+      case "SHUAI": 
+        myBlock = this.props.block.color == "BLACK"?"将":"帅";
+        break;
+      case "BING": 
+        myBlock = this.props.block.color == "BLACK"?"卒":"兵";
+        break;
+    }
+  }
     return (
       <button
+        className="Block"
         onClick={this.handleClick}
         style={{ color: this.props.block?.color }}
       >
-        {this.props.block === null ? "" : this.props.block.type}
+        {myBlock}
       </button>
     );
   }
