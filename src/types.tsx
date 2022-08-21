@@ -98,4 +98,4 @@ export type BlockState = {
   row: number;
 };
 
-export const apiUri: string = "localhost:8080";
+export const apiUri: string = "170.187.139.216:8080";
