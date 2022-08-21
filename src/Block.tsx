@@ -1,6 +1,5 @@
 import React, { MouseEventHandler } from "react";
 import { BlockProps, BlockState } from "./types";
-import BoardElement from "./Board";
 import "./App.css"
 
 export default class BlockElement extends React.Component<
@@ -26,25 +25,25 @@ export default class BlockElement extends React.Component<
   if(this.props.block !== null){
     switch(this.props.block?.type){
       case "JU": 
-        myBlock = this.props.block.color == "BLACK"?"車":"俥";
+        myBlock = this.props.block.color === "BLACK"?"車":"俥";
         break;
       case "MA": 
-        myBlock = this.props.block.color == "BLACK"?"馬":"傌";
+        myBlock = this.props.block.color === "BLACK"?"馬":"傌";
         break;
       case "PAO": 
-        myBlock = this.props.block.color == "BLACK"?"炮":"炮";
+        myBlock = this.props.block.color === "BLACK"?"炮":"炮";
         break;
       case "SHI": 
-        myBlock = this.props.block.color == "BLACK"?"士":"仕";
+        myBlock = this.props.block.color === "BLACK"?"士":"仕";
         break;
       case "XIANG": 
-        myBlock = this.props.block.color == "BLACK"?"象":"相";
+        myBlock = this.props.block.color === "BLACK"?"象":"相";
         break;
       case "SHUAI": 
-        myBlock = this.props.block.color == "BLACK"?"将":"帅";
+        myBlock = this.props.block.color === "BLACK"?"将":"帅";
         break;
       case "BING": 
-        myBlock = this.props.block.color == "BLACK"?"卒":"兵";
+        myBlock = this.props.block.color === "BLACK"?"卒":"兵";
         break;
     }
   }
@@ -52,7 +51,7 @@ export default class BlockElement extends React.Component<
       <button
         className="Block"
         onClick={this.handleClick}
-        style={{ color: this.props.block?.color }}
+        style={{ color: this.props.block?.color, backgroundColor: this.props.block? "rgb(240, 220, 169)" : "transparent", border: this.props.block? "6px, black" : "none"}}
       >
         {myBlock}
       </button>

@@ -1,6 +1,7 @@
 import React from "react";
 import { GameProps, GameState} from "./types";
 import BoardElement from "./Board";
+import "./App.css";
 
 export default class GameElement extends React.Component<GameProps, GameState> {
   constructor(props: GameProps) {

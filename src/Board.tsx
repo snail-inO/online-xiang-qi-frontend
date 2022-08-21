@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import BlockElement from "./Block";
 import { BoardProps, BoardState, Piece, Board, User } from "./types";
+import "./App.css"
 
 export default class BoardElement extends React.Component<
   BoardProps,
@@ -81,8 +82,8 @@ export default class BoardElement extends React.Component<
       );
     }
     return (
-      <div>
-        <p>{this.state.errInfo}</p>
+      <div className="Board">
+        <p>{this.state.errInfo}</p><br/>
         <table>
           <tbody>{React.Children.toArray(res)}</tbody>
         </table>
@@ -108,7 +109,7 @@ type CellProps = {
 
 function Cell({ row, col, block, handleBlock }: CellProps): JSX.Element {
   return (
-    <td>
+    <td className="Cell">
       <BlockElement
         handleBlock={handleBlock}
         col={col}

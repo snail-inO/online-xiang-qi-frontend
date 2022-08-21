@@ -45,5 +45,15 @@
   max-width: 100px;
   height: 100px;
   max-height: 100px;
-  vertical-align: middle;
+  font-size: 50px;
+  font-family: "STKaiti", "楷体","楷体_GB2312";
+}
+
+
+.Board {
+  background-color: rgb(240, 220, 169);
+  width: fit-content;
+  background-image: url("https://pic8.photophoto.cn/20080828/0020033092346353_b.jpg");
+  background-position: center;
+  margin: 0 auto;
 }
