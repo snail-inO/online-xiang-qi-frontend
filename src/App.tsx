@@ -18,13 +18,15 @@ type ModeFromProps = {
 
 type HeaderProps = {
   user: User | null;
+  score: number | null;
 };
 
 class App extends React.Component<Object, AppState> {
   constructor(props: Object) {
     super(props);
-    this.state = { user: null, game: null, mode1: -1, mode2: -1};
+    this.state = { user: null, game: null, mode1: -1, mode2: -1, score: null };
     this.handleNewGameCallback = this.handleNewGameCallback.bind(this);
+    this.handleEndGameCallback = this.handleEndGameCallback.bind(this);
     this.startMatching = this.startMatching.bind(this);
     this.submitMode = this.submitMode.bind(this);
   }
@@ -35,20 +37,35 @@ class App extends React.Component<Object, AppState> {
     console.log(username);
 
     this.startMatching(username).then((res) => {
-      this.setState({ user: res, game: this.state.game, mode1: this.state.mode1, mode2: this.state.mode2});
+      this.setState({
+        user: res,
+        game: this.state.game,
+        mode1: this.state.mode1,
+        mode2: this.state.mode2,
+        score: this.state.score,
+      });
     });
   };
 
   handleModeSubmit: FormEventHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const mode1 = parseInt((event.currentTarget.children[1] as HTMLInputElement)
-      .value);
-    const mode2 = parseInt((event.currentTarget.children[3] as HTMLInputElement)
-      .value);
-    const size = parseInt((event.currentTarget.children[5] as HTMLInputElement)
-      .value);
+    const mode1 = parseInt(
+      (event.currentTarget.children[1] as HTMLInputElement).value
+    );
+    const mode2 = parseInt(
+      (event.currentTarget.children[3] as HTMLInputElement).value
+    );
+    const size = parseInt(
+      (event.currentTarget.children[5] as HTMLInputElement).value
+    );
     this.submitMode(mode1, mode2, size).then((res) => {
-      this.setState({user: this.state.user, game: this.state.game, mode1: mode1, mode2: mode2});
+      this.setState({
+        user: this.state.user,
+        game: this.state.game,
+        mode1: mode1,
+        mode2: mode2,
+        score: this.state.score,
+      });
     });
   };
 
@@ -56,6 +73,13 @@ class App extends React.Component<Object, AppState> {
     const gameLink: string = message.body.replaceAll('"', "");
     console.log(gameLink);
     this.getGame(gameLink);
+  }
+
+  handleEndGameCallback(message: Message): void {
+    const scoreStr: string = message.body.replaceAll('"', "");
+    const score = parseFloat(scoreStr) * (this.state.user?.color == "BLACK"? -1 : 1);
+    console.log(scoreStr);
+    this.setState({score: score});
   }
 
   async getGame(link: string) {
@@ -81,7 +105,9 @@ class App extends React.Component<Object, AppState> {
     }
 
     let pieces = (
-      await axios.get((game.boards.at(-1) as Board)._links?.pieces?.href as string)
+      await axios.get(
+        (game.boards.at(-1) as Board)._links?.pieces?.href as string
+      )
     ).data;
     (game.boards.at(-1) as Board).pieces = {};
     Object.keys(pieces).forEach((key) => {
@@ -104,7 +130,8 @@ class App extends React.Component<Object, AppState> {
         _links: game._links,
       },
       mode1: this.state.mode1,
-      mode2: this.state.mode2
+      mode2: this.state.mode2,
+      score: null,
     });
   }
 
@@ -118,6 +145,10 @@ class App extends React.Component<Object, AppState> {
     subscribeMessage(
       `/xiang-qi/newGame/${user.id}`,
       this.handleNewGameCallback
+    );
+    subscribeMessage(
+      `/xiang-qi/endGame/${user.id}`,
+      this.handleEndGameCallback
     );
 
     console.log(user);
@@ -138,9 +169,10 @@ class App extends React.Component<Object, AppState> {
     if (this.state.user != null) {
       console.log("submit mode: " + this.state.user);
       console.log("submit mode: " + this.state.user.id);
-      putResp = await axios.put(`http://${apiUri}/mode?uid=${this.state.user.id}&mode1=${mode1}&mode2=${mode2}&size=${size}`);
+      putResp = await axios.put(
+        `http://${apiUri}/mode?uid=${this.state.user.id}&mode1=${mode1}&mode2=${mode2}&size=${size}`
+      );
     }
-
   }
 
   render(): React.ReactNode {
@@ -149,10 +181,19 @@ class App extends React.Component<Object, AppState> {
     console.log(this.state.game);
     return (
       <div className="App">
-        <Header user={user} />
+        <Header user={user} score={this.state.score} />
         <StartForm user={user} handleSubmit={this.handleSubmit} />
-        <ModeForm user={user} selected={!(this.state.mode1 === -1 && this.state.mode2 === -1)} handleSubmit={this.handleModeSubmit} />
-        <GameElement user={user} game={this.state.game} mode1={this.state.mode1} mode2={this.state.mode2} />
+        <ModeForm
+          user={user}
+          selected={!(this.state.mode1 === -1 && this.state.mode2 === -1)}
+          handleSubmit={this.handleModeSubmit}
+        />
+        <GameElement
+          user={user}
+          game={this.state.game}
+          mode1={this.state.mode1}
+          mode2={this.state.mode2}
+        />
       </div>
     );
   }
@@ -170,7 +211,10 @@ function StartForm(props: StartFromProps): JSX.Element {
 }
 
 function ModeForm(props: ModeFromProps): JSX.Element {
-  let style = props.selected === false && props.user != null ? { display: "block" } : { display: "none" };
+  let style =
+    props.selected === false && props.user != null
+      ? { display: "block" }
+      : { display: "none" };
   return (
     <div style={style}>
       <p>mode: </p>
@@ -179,18 +223,17 @@ function ModeForm(props: ModeFromProps): JSX.Element {
       <p>2 - baseline mode</p>
       <p>3 - NN mode</p>
       <p>problem size: 3 - 7</p>
-    <form onSubmit={props.handleSubmit}>
-      <label htmlFor="mode1">Your mode: </label>
-      <input type="number" id="player1Mode" name="mode1" min="0" max="3" />
-      <label htmlFor="mode2">Opponent mode: </label>
-      <input type="number" id="player2Mode" name="mode2" min="0" max="3" />
-      <label htmlFor="size">problem size: </label>
-      <input type="number" id="problemSize" name="size" min="0" max="8" />
-      <input type="submit" value="Confirm" />
-    </form>
+      <form onSubmit={props.handleSubmit}>
+        <label htmlFor="mode1">Your mode: </label>
+        <input type="number" id="player1Mode" name="mode1" min="0" max="3" />
+        <label htmlFor="mode2">Opponent mode: </label>
+        <input type="number" id="player2Mode" name="mode2" min="0" max="3" />
+        <label htmlFor="size">problem size: </label>
+        <input type="number" id="problemSize" name="size" min="0" max="8" />
+        <input type="submit" value="Confirm" />
+      </form>
     </div>
-  )
-
+  );
 }
 
 function Header(props: HeaderProps): JSX.Element {
@@ -207,7 +250,7 @@ function Header(props: HeaderProps): JSX.Element {
       <h2>Welcome {props.user.name}</h2>
       <p>
         Status: {props.user.status} TotalGames: {props.user.totalGames} Wins:{" "}
-        {props.user.wins} Score:{}
+        {props.user.wins} Score: {props.score == null ? "NA" : props.score}
       </p>
     </header>
   );
