@@ -57,23 +57,28 @@ export interface Link {
 export type AppState = {
   user: User | null;
   game: Game | null;
+  mode1: number;
+  mode2: number;
 };
 
 export type GameProps = {
   user: User | null;
   game: Game | null;
+  mode1: number;
+  mode2: number;
 };
 
 export type GameState = {
   user: User | null;
   game: Game | null;
   board: Board | null;
-
 };
 
 export type BoardProps = {
   user: User | null;
   board: Board | null;
+  mode1: number;
+  mode2: number;
 };
 
 export type BoardState = {

@@ -39,7 +39,7 @@ export default class BoardElement extends React.Component<
       const url = curPiece._links?.self.href as string;
       console.log(curPiece);
       axios
-        .put(url, curPiece)
+        .put(url + `?mode1=${this.props.mode1}&mode2=${this.props.mode2}`, curPiece)
         .then((response) => {
           this.setState({ errInfo: "" });
           const newPiece: Piece = response.data;
