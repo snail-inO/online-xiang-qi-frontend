@@ -172,15 +172,23 @@ function StartForm(props: StartFromProps): JSX.Element {
 function ModeForm(props: ModeFromProps): JSX.Element {
   let style = props.selected === false && props.user != null ? { display: "block" } : { display: "none" };
   return (
-    <form style={style} onSubmit={props.handleSubmit}>
-      <label htmlFor="mode1">player1 mode: </label>
-      <input type="number" id="player1Mode" name="mode1" min="0" max="2" />
-      <label htmlFor="mode2">player2 mode: </label>
-      <input type="number" id="player2Mode" name="mode2" min="0" max="2" />
+    <div style={style}>
+      <p>mode: </p>
+      <p>0 - user mode</p>
+      <p>1 - tree-based mode</p>
+      <p>2 - baseline mode</p>
+      <p>3 - NN mode</p>
+      <p>problem size: 3 - 7</p>
+    <form onSubmit={props.handleSubmit}>
+      <label htmlFor="mode1">Your mode: </label>
+      <input type="number" id="player1Mode" name="mode1" min="0" max="3" />
+      <label htmlFor="mode2">Opponent mode: </label>
+      <input type="number" id="player2Mode" name="mode2" min="0" max="3" />
       <label htmlFor="size">problem size: </label>
-      <input type="number" id="problemSize" name="size" min="0" max="6" />
+      <input type="number" id="problemSize" name="size" min="0" max="8" />
       <input type="submit" value="Confirm" />
     </form>
+    </div>
   )
 
 }
@@ -199,7 +207,7 @@ function Header(props: HeaderProps): JSX.Element {
       <h2>Welcome {props.user.name}</h2>
       <p>
         Status: {props.user.status} TotalGames: {props.user.totalGames} Wins:{" "}
-        {props.user.wins}
+        {props.user.wins} Score:{}
       </p>
     </header>
   );
