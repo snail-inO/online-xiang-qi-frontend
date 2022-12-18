@@ -20,6 +20,7 @@ export interface Game {
   status: "IN_PROGRESS" | "END";
   totalSteps: number;
   boards: Array<Board>;
+  score: number | null;
   _links?: Links;
 }
 

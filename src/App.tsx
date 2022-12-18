@@ -26,7 +26,6 @@ class App extends React.Component<Object, AppState> {
     super(props);
     this.state = { user: null, game: null, mode1: -1, mode2: -1, score: null };
     this.handleNewGameCallback = this.handleNewGameCallback.bind(this);
-    this.handleEndGameCallback = this.handleEndGameCallback.bind(this);
     this.startMatching = this.startMatching.bind(this);
     this.submitMode = this.submitMode.bind(this);
   }
@@ -75,15 +74,10 @@ class App extends React.Component<Object, AppState> {
     this.getGame(gameLink);
   }
 
-  handleEndGameCallback(message: Message): void {
-    const scoreStr: string = message.body.replaceAll('"', "");
-    const score = parseFloat(scoreStr) * (this.state.user?.color == "BLACK"? -1 : 1);
-    console.log(scoreStr);
-    this.setState({score: score});
-  }
 
   async getGame(link: string) {
     let game: Game = (await axios.get(link)).data;
+    
     console.log(game);
 
     game.boards = (
@@ -126,12 +120,13 @@ class App extends React.Component<Object, AppState> {
         id: game.id,
         status: game.status,
         totalSteps: game.totalSteps,
+        score: game.score,
         boards: [...game.boards],
         _links: game._links,
       },
       mode1: this.state.mode1,
       mode2: this.state.mode2,
-      score: null,
+      score: game.score == null? null : game.score * (user?.color == "BLACK"? -1 : 1),
     });
   }
 
@@ -145,10 +140,6 @@ class App extends React.Component<Object, AppState> {
     subscribeMessage(
       `/xiang-qi/newGame/${user.id}`,
       this.handleNewGameCallback
-    );
-    subscribeMessage(
-      `/xiang-qi/endGame/${user.id}`,
-      this.handleEndGameCallback
     );
 
     console.log(user);
