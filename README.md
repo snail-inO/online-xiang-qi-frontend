@@ -1,46 +1,37 @@
-# Getting Started with Create React App
+# online-xiang-qi-frontend
+An online Xiang Qi (Chinese Chess) game web app frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
+The project is a web application implements an AI using Monte Carlo Tree Search algorithm with a Convolutional Neural Network in a Chinese Chess Game.\
+The tree-based AI has a reasonable performance when the rollout times is larger than 50 and depth limit is larger than 100. However, the tree-based AI integrated with NN has worse performance than the tree-based AI without NN, which is possibly due to the inappropriate utility evaluation and the incorrect design of NN model.\
+The project contains three modules: [backend server](https://github.com/snail-inO/online-xiang-qi.git), frontend application, and [NN module](https://github.com/snail-inO/online-xiang-qi.git).
 
-## Available Scripts
+## Get Started
+### Prerequisites
+* [Docker](https://www.docker.com/) (version = 20.10.17)
 
-In the project directory, you can run:
+### Deployment
+#### [Backend](https://github.com/snail-inO/online-xiang-qi.git)
+1. Clone the repository: `$ git clone https://github.com/snail-inO/online-xiang-qi.git`
+2. Go to the project code directory: `$ cd online-xiang-qi/code`
+3. Start Docker client
+4. Run containers: `docker-compose up` (need to run after building Docker image of frontend, Frontend step4)
+#### Frontend
+1. Clone the repository: `$ https://github.com/snail-inO/online-xiang-qi-frontend.git`
+2. Go to the project directory: `$ cd online-xiang-qi-frontend`
+3. Start Docker client
+4. Build docker image: `docker build -t front .`
 
-### `npm start`
+### Usage
+1. Access http://localhost:3000 on a browser
+2. Enter a user name
+3. Select game modes and problem size (opponet mode cannot set to user mode if your mode isn't user mode)
+4. Red player moves first
+5. Perform a move
+  1. (User mode) Click on the piece of your color to select the piece (click one more time to unselect) and click on a valid position on the board to move
+  2. (AI mode) Click `Next` button to perform a move (Do not click the button if opponent's move is not completed)
+6. Wait until opponent's move is completed, then repeat step 5
+7. If you do not perform an action longer than 60 seconds, you will lose the game
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Licence
+This project is licensed under the [GPLv2 License](LICENSE).
