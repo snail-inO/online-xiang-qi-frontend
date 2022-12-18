@@ -15,12 +15,12 @@ The project contains three modules: [backend server](https://github.com/snail-in
 1. Clone the repository: `$ git clone https://github.com/snail-inO/online-xiang-qi.git`
 2. Go to the project code directory: `$ cd online-xiang-qi/code`
 3. Start Docker client
-4. Run containers: `docker-compose up` (need to run after building Docker image of frontend, Frontend step4)
+4. Run containers: `$ docker-compose up` (need to run after building Docker image of frontend, Frontend step4)
 #### Frontend
-1. Clone the repository: `$ https://github.com/snail-inO/online-xiang-qi-frontend.git`
+1. Clone the repository: `$ git clone https://github.com/snail-inO/online-xiang-qi-frontend.git`
 2. Go to the project directory: `$ cd online-xiang-qi-frontend`
 3. Start Docker client
-4. Build docker image: `docker build -t front .`
+4. Build docker image: `$ docker build -t front .`
 
 ### Usage
 1. Access http://localhost:3000 on a browser
